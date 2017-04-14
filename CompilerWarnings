@@ -1,0 +1,24 @@
+import glob
+from openpyxl import load_workbook
+import warnings
+csvList = glob.glob('./*.csv')
+rqsDumpDict = {}
+
+for csvFile in csvList:
+        with open(csvFile,'r') as f:
+                release = f.readline().split(',',2)[1]
+                print ("Release = " + release)
+                f.readline()
+                for line in f:
+                    puid = 'surv_5'
+                    try:
+                        valueArr = line.split(',')
+                        group = valueArr[0].split('_')[0]
+                        module = valueArr[0].split('_')[1]
+                        component = valueArr[0].split('_')[2]
+                        moduleName = ''.join([puid, ':', group, ':', module, ':', component])
+                        print (moduleName)
+
+                    except Exception as e:
+                            print ("Index out of range exception")
+
