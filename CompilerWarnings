@@ -1,24 +1,32 @@
 import glob
 from openpyxl import load_workbook
+from openpyxl import worksheet
 import warnings
+
 csvList = glob.glob('./*.csv')
 rqsDumpDict = {}
 
 for csvFile in csvList:
-        with open(csvFile,'r') as f:
-                release = f.readline().split(',',2)[1]
-                print ("Release = " + release)
-                f.readline()
-                for line in f:
-                    puid = 'surv_5'
-                    try:
-                        valueArr = line.split(',')
-                        group = valueArr[0].split('_')[0]
-                        module = valueArr[0].split('_')[1]
-                        component = valueArr[0].split('_')[2]
-                        moduleName = ''.join([puid, ':', group, ':', module, ':', component])
-                        print (moduleName)
+    with open(csvFile, 'r') as f:
+        release = f.readline().split(',', 2)[1]
+        print("Release = " + release)
+        f.readline()
+        rowid = 1
+        for line in f:
+            puid = 'surv_5'
+            try:
+                valueArr = line.split(',')
+                group = valueArr[0].split('_')[0]
+                module = valueArr[0].split('_')[1]
+                component = valueArr[0].split('_')[2]
+                moduleName = ''.join([puid, ':', group, ':', module, ':', component])
+                print(moduleName)
+                wb = load_workbook(filename='compiler.xlsx')
+                ws = wb.get_sheet_by_name("testing")
+                data = ws.cell(row=rowid, column=1, value=moduleName)
+                rowid += 1
 
-                    except Exception as e:
-                            print ("Index out of range exception")
+            except Exception as e:
+                print("Index out of range exception")
+
 
