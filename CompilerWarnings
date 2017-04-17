@@ -25,6 +25,8 @@ for csvFile in csvList:
                 ws = wb.get_sheet_by_name("testing")
                 data = ws.cell(row=rowid, column=1, value=moduleName)
                 rowid += 1
+                wb.save("compiler.xlsx")
+                
 
             except Exception as e:
                 print("Index out of range exception")
